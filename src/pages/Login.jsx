@@ -1,6 +1,7 @@
-// src/pages/Login.jsx
 import React, { useState } from 'react';
-import { loginWithEmail, signupWithEmail, loginWithGoogle } from '../firebase/functions';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from '../firebase/config'; // Import auth and db from firebase config
+import { doc, getDoc } from 'firebase/firestore'; // Firestore functions
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
@@ -10,26 +11,24 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-      await loginWithEmail(email, password);
-      navigate('/dashboard');
-    } catch (error) {
-      alert(error.message);
-    }
-  };
+      // Log in user with email and password
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
 
-  const handleSignup = async () => {
-    try {
-      await signupWithEmail(email, password);
-      navigate('/dashboard');
-    } catch (error) {
-      alert(error.message);
-    }
-  };
+      // Fetch the user's role from Firestore
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      if (userDoc.exists()) {
+        const userRole = userDoc.data().role;
 
-  const handleGoogle = async () => {
-    try {
-      await loginWithGoogle();
-      navigate('/dashboard');
+        // Redirect based on user role
+        if (userRole === 'Doctor') {
+          navigate('/doctor-dashboard');
+        } else {
+          navigate('/patient-dashboard');
+        }
+      } else {
+        alert("No role found for this user!");
+      }
     } catch (error) {
       alert(error.message);
     }
@@ -37,9 +36,10 @@ function Login() {
 
   return (
     <div style={{ textAlign: 'center', marginTop: '10%' }}>
-      <h2>MedAI Login</h2>
+      <h2>Login</h2>
       <input
         placeholder="Email"
+        type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       /><br /><br />
@@ -50,9 +50,6 @@ function Login() {
         onChange={(e) => setPassword(e.target.value)}
       /><br /><br />
       <button onClick={handleLogin}>Login</button>
-      <button onClick={handleSignup}>Signup</button>
-      <br /><br />
-      <button onClick={handleGoogle}>Login with Google</button>
     </div>
   );
 }
