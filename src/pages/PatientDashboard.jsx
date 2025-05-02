@@ -15,6 +15,8 @@ function PatientDashboard() {
 
   // Initialize Generative AI
   const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+  
+  // Configure the generative AI (similar to Python approach)
   const genAI = new GoogleGenerativeAI(API_KEY);
 
   // Input Change Handler
@@ -55,10 +57,10 @@ Provide a detailed analysis:
 4. Urgency of medical consultation
 5. General health recommendations`;
 
-      // Use Gemini Pro model
+      // Configure the model - use gemini-1.5-flash as in your Python code
       const model = genAI.getGenerativeModel({ 
-        model: "gemini-pro",
-        // Add safety settings
+        model: "models/gemini-1.5-flash",
+        // Safety settings
         safetySettings: [
           {
             category: 'HARM_CATEGORY_HARASSMENT',
@@ -68,7 +70,13 @@ Provide a detailed analysis:
             category: 'HARM_CATEGORY_HATE_SPEECH', 
             threshold: 'BLOCK_NONE'
           }
-        ]
+        ],
+        // Generation config
+        generationConfig: {
+          temperature: 0.3,
+          topP: 0.8,
+          maxOutputTokens: 1024,
+        }
       });
 
       // Generate content
@@ -78,7 +86,7 @@ Provide a detailed analysis:
       setResponse(geminiResponse);
 
     } catch (error) {
-      console.error('Gemini API Error:', error);
+      console.error('Gemini API Detailed Error:', error);
 
       let errorMessage = 'An unexpected error occurred';
 
@@ -87,6 +95,8 @@ Provide a detailed analysis:
         errorMessage = 'Invalid API Key. Please check your configuration.';
       } else if (error.message.includes('network')) {
         errorMessage = 'Network error. Please check your internet connection.';
+      } else if (error.message.includes('models/gemini-pro is not found')) {
+        errorMessage = 'Invalid model. Please use models/gemini-1.5-flash.';
       } else {
         errorMessage = error.message || 'Failed to process symptoms';
       }
