@@ -89,27 +89,26 @@ function App() {
 
           {/* Protected Routes */}
           <Route 
-            path="/doctor-dashboard" 
-            element={
-              authState.isAuthenticated && authState.role === 'doctor' ? (
-                <DoctorDashboard />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            } 
-          />
+  path="/doctor-dashboard" 
+  element={
+    authState.isAuthenticated && authState.role === 'Doctor' ? (
+      <DoctorDashboard />
+    ) : (
+      <Navigate to="/login" replace />
+    )
+  } 
+/>
 
-          <Route 
-            path="/patient-dashboard" 
-            element={
-              authState.isAuthenticated && authState.role === 'patient' ? (
-                <PatientDashboard />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            } 
-          />
-
+<Route 
+  path="/patient-dashboard" 
+  element={
+    authState.isAuthenticated && authState.role === 'Patient' ? (
+      <PatientDashboard />
+    ) : (
+      <Navigate to="/login" replace />
+    )
+  } 
+/>
           {/* Default Redirect */}
           <Route 
             path="/" 
