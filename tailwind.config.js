@@ -1,29 +1,22 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-    content: [
-      "./index.html",
-      "./src/**/*.{js,ts,jsx,tsx}",
-    ],
-    theme: {
-      extend: {
-        colors: {
-          // Custom color palette
-          'brand-primary': '#3498db',
-          'brand-secondary': '#2ecc71',
-        },
-        fontFamily: {
-          // Custom font families
-          'sans': ['Inter', 'system-ui', 'sans-serif'],
-        },
-        boxShadow: {
-          // Custom shadow
-          'custom': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-        }
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        'brand-primary': '#3498db',
+        'brand-secondary': '#2ecc71',
       },
+      fontFamily: {
+        'sans': ['Inter', 'system-ui', 'sans-serif'],
+      },
+      boxShadow: {
+        'custom': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+      }
     },
-    plugins: [
-      // Optional plugins
-      // require('@tailwindcss/forms'),
-      // require('@tailwindcss/typography'),
-    ],
-  }
+  },
+  plugins: [],
+}

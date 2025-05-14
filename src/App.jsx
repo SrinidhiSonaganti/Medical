@@ -74,19 +74,14 @@ function App() {
     );
   }
 
-  // Automatic redirection logic
-  if (authState.isAuthenticated) {
-    if (authState.role === 'patient') {
-      return <Navigate to="/patient-dashboard" replace />;
-    } else if (authState.role === 'doctor') {
-      return <Navigate to="/doctor-dashboard" replace />;
-    }
-  }
-
   return (
     <Router>
       <div className="min-h-screen bg-gray-100">
         <Navbar />
+        
+        {/* Add the TailwindTest component at the top for testing */}
+      
+        
         <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<Login />} />
